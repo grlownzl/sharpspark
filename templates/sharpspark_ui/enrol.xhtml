@@ -1,0 +1,19 @@
+{% extends "sharpspark_ui/base.xhtml" %}
+
+{% block title %}Enrol with sharp spark{% endblock %}
+
+{% block content %}
+    <h1>Please choose a course that you would like to enroll in:</h1>
+    {% for course in courses %}
+        <h3>{% course.title %}</h3>
+        <p>{% course.description %}</p>
+        <p>Keywords: <span>{% course.keywords %}</span></p>
+        <h4>Learning Outcomes</h4>
+        <ul>
+        {% for outcome in course.outcomes %}
+            <li>{% outcome %}</li>
+        {% endfor %}
+        </ul>
+    {% endfor %}
+
+{% endblock %}

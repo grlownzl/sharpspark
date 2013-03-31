@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% load bootstrap_toolkit %}
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="Geoff Low">
+    <title>{% block title %}{% endblock %}</title>
+    {% bootstrap_stylesheet_tag %}
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+        }
+
+        /* Wrapper for page content to push down footer */
+        #wrap {
+            min-height: 100%;
+            height: auto !important;
+            height: 100%;
+            /* Negative indent footer by it's height */
+            margin: 0 auto -60px;
+        }
+
+        /* Set the fixed height of the footer here */
+        #push,
+        #footer {
+            height: 60px;
+        }
+        #footer {
+            background-color: #f5f5f5;
+        }
+
+        /* Lastly, apply responsive CSS fixes as necessary */
+        @media (max-width: 767px) {
+            #footer {
+                margin-left: -20px;
+                margin-right: -20px;
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+        }
+
+        /* Custom page CSS
+      -------------------------------------------------- */
+        /* Not required for template or sticky footer method. */
+
+        #wrap > .container {
+            padding-top: 60px;
+        }
+        .container .credit {
+            margin: 20px 0;
+        }
+
+    </style>
+    <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    {% bootstrap_javascript_tag %}
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="brand" href="{% url 'home' %}">Sharp Spark</a>
+                <ul class="nav">
+                    <li><a href="{% url 'home' %}" class="">Home</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li><a href="{% url 'contact' %}">Contact Us</a></li>
+                    <li><a href="{% url 'blog' %}">Blog</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row-fluid">
+            <div class="span10 offset1">
+                <div class="span2">
+                    <img src="{{ STATIC_URL }}images/sharpspark_sidebar.png" alt="Igniting Minds"/>
+                </div>
+                <div class="span8">
+                    <p>Banner String</p>
+                </div>
+            </div>
+            <div class="span10 offset1">
+                <div class="span2">
+                    <p>A quote</p>
+                    <img style="float: right;" src="{{ STATIC_URL }}images/igniting_rotate.png" alt="Igniting Minds"/>
+                </div>
+                <div class="span8">
+                    {% block content %}Empty page{% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+  </body>
+</html>

@@ -1,0 +1,7 @@
+Django
+django-extensions
+django-bootstrap-toolkit
+django-markdown
+PIL
+django-blog-zinnia
+django-phonenumber-field
