@@ -32,9 +32,9 @@ class Course(models.Model):
 class Contact(models.Model):
     """Contact Request"""
     # Interest Modalities
-    ENROLL = "EN"
-    MOREINFO = "MI"
-    LICENSING = "LI"
+    ENROLL = 0
+    MOREINFO = 1
+    LICENSING = 2
     INTEREST_AREA = (
         (ENROLL, "Enrolling in a course"),
         (MOREINFO, "More info on Sharp Spark"),
@@ -56,7 +56,7 @@ class Contact(models.Model):
                             max_length=100)
     email = models.EmailField(name="contactemail", verbose_name="Email Address")
     contact_number = PhoneNumberField(name="contact_number", verbose_name="Phone Number")
-    area_of_interest = models.TextField(name="area_of_interest",
+    area_of_interest = models.IntegerField(name="area_of_interest",
                                         verbose_name="What are you mostly interested in?",
                                         max_length=2,
                                         choices=INTEREST_AREA,

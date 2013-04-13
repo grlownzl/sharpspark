@@ -1,4 +1,5 @@
 {% extends "sharpspark_ui/base.xhtml" %}
+{% load crispy_forms_tags %}
 {% block title %}
     How to contact Sharp Spark
 {% endblock %}
@@ -13,6 +14,6 @@
         <p>
             Alternatively, fill in the following to get us to contact you!  (Don't worry, your details go no further than our safe little hands)
         </p>
-        {{ form }}
+        {% crispy form %}
     </div>
 {% endblock %}
