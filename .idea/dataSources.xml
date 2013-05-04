@@ -3,7 +3,7 @@
   <component name="DataSourceManagerImpl" format="xml" hash="433651181">
     <data-source source="LOCAL" name="Django default" product="" version="" jdbc-version="" driver-name="" driver-version="" uuid="3216c830-d661-4df9-b8e8-904017315857">
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql:///sparks</jdbc-url>
+      <jdbc-url>jdbc:mysql:///</jdbc-url>
       <user-name>sharpsparks</user-name>
       <user-password>dfd9dfdadfcbdfd8dfc1dfd9df9b</user-password>
       <libraries>
