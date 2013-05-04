@@ -5,11 +5,17 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 class View(models.Model):
     """Describes a View"""
-    name = models.TextField(name="name", verbose_name="View Name", null=False, unique=True)
+    name = models.CharField(name="name",
+                            verbose_name="View Name",
+                            null=False,
+                            unique=True,
+                            max_length=100)
 
 class FillableInterface(models.Model):
-    """Block of text by name to be created"""
-    tag = models.TextField(name="fieldtag", unique=True)
+    """Block of text by name to be created - for wiki'ised updates"""
+    tag = models.CharField(name="fieldtag",
+                           unique=True,
+                           max_length=15)
     view = models.ForeignKey(View)
     content = models.SlugField(name="content", null=False)
     updated = models.DateTimeField(name="updated", verbose_name="Updated At", auto_now=True)
@@ -20,34 +26,93 @@ class LearningOutcome(models.Model):
     description = models.TextField(name="description", verbose_name="Learning Outcome")
 
 class KeyWord(models.Model):
+    """Stack of categories for a course"""
     keyword = models.TextField(name="keyword", verbose_name="Course Keyword")
 
 class Course(models.Model):
     """Course for students"""
-    name = models.TextField(name="name", verbose_name="Course Name", null=False, unique=True)
-    description = models.TextField(name="description", verbose_name="Course Description")
+    name = models.CharField(name="name",
+                            verbose_name="Course Name",
+                            null=False,
+                            unique=True,
+                            max_length=250)
+    description = models.CharField(name="description",
+                                   verbose_name="Course Description",
+                                   max_length=250)
     learning_outcomes = models.ManyToManyField(LearningOutcome)
     keywords = models.ManyToManyField(KeyWord)
 
-class Contact(models.Model):
-    """Contact Request"""
+class Student(models.Model):
+    """Student for a course"""
+    surname = models.CharField(name="surname",
+                               verbose_name="Student Surname",
+                               max_length=100,
+                               null=False)
+    forename = models.CharField(name="forename",
+                                verbose_name="Student Forename",
+                                max_length=100,
+                                null=False)
+    dob = models.DateField(name="dob", verbose_name="Date of Birth")
+    first_contact = models.DateField(name="first_contact", verbose_name="Date of First Contact",
+                                     auto_now_add=True, null=False)
+
+class ResponsibleAdult(models.Model):
+    """Responsible Adult"""
+    surname = models.CharField(name="surname",
+                               verbose_name="Responsible Adult Surname",
+                               null=False,
+                               max_length=100)
+    forename = models.CharField(name="forename",
+                                verbose_name="Responsible Adult Forename",
+                                null=False,
+                                max_length=100)
+    contact_number = PhoneNumberField(null=False)
+    email = models.EmailField(verbose_name="Responsible Adult Email")
+
+class StudentLink(models.Model):
+    """Links a Student to an Adult"""
+    adult = models.ManyToManyField(ResponsibleAdult)
+    student = models.ForeignKey(Student)
+
+
+class Enrollment(models.Model):
+    student = models.ForeignKey(Student)
+    course = models.ForeignKey(Course)
+    date = models.DateField(verbose_name="Date of Enrollment")
+
+class CourseConduct(models.Model):
+    """Invocation of course"""
+    course = models.ForeignKey(Course)
+    student = models.ForeignKey(Student)
+    start_date = models.DateField(verbose_name="Start Date for Course")
+    end_date = models.DateField(verbose_name="End Date for Course")
+    outcome = models.IntegerField(verbose_name="Outcome of Course",
+                                  choices=((1, 'Started'),
+                                           (2, 'Completed'),
+                                           (3, "Pulled out")),
+                                  )
+
+class CourseLocation(models.Model):
+    contact_number = PhoneNumberField(verbose_name="Contact phone number")
+    # TODO: Store as a blob, but should hve a more 'aware' field
+    text_address = models.TextField(verbose_name="Address")
+
+class ContactRequest(models.Model):
+    """Contact Request from the website"""
     # Interest Modalities
-    ENROLL = 0
-    MOREINFO = 1
-    LICENSING = 2
     INTEREST_AREA = (
-        (ENROLL, "Enrolling in a course"),
-        (MOREINFO, "More info on Sharp Spark"),
-        (LICENSING, "Taking Sharp Spark global (mwhahahah)")
+        (0, "Enrolling in a course"),
+        (1, "More info on Sharp Spark"),
+        (2, "Arranging a Course in your School"),
+        (3, "Tutoring (Chemistry, General Science)"),
+        (4, "Tutoring (Exam Skills)"),
+
     )
     # Contact Modalities
-    PHONE = 0
-    EMAIL = 1
-    FAX = 2
     CONTACT_MODES = (
-        (PHONE, "Phone"),
-        (EMAIL, "Email"),
-        (FAX, "Fax (you're kidding, right?)")
+        (0, "Phone"),
+        (1, "Email"),
+        (2, "Fax (you're kidding, right?)")
     )
     date = models.DateTimeField(name="contactdate", verbose_name="Date of Contact", auto_now_add=True)
     name = models.CharField(name="contactname",
@@ -60,15 +125,16 @@ class Contact(models.Model):
                                         verbose_name="What are you mostly interested in?",
                                         max_length=2,
                                         choices=INTEREST_AREA,
-                                        default=ENROLL,
+                                        default=0,
                                         null=False)
     primary_mode = models.IntegerField(name="preferred_contact",
                                        verbose_name="Preferred contact method?",
                                        choices=CONTACT_MODES,
-                                       default=EMAIL,
+                                       default=1,
                                        null=False)
-    comments = models.TextField(name="comments",
-                                verbose_name="Any information that can help us, help you?")
+    comments = models.CharField(name="comments",
+                                verbose_name="Any information that can help us, help you?",
+                                max_length=500)
 
 
     def get_absolute_url(self):

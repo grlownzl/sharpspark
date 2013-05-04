@@ -5,3 +5,4 @@ PIL
 django-blog-zinnia
 django-phonenumber-field
 django-crispy-forms
+MySQL-python
